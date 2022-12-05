@@ -5,8 +5,19 @@ import React, { useEffect, useState } from "react";
 import { ProductList } from "./components/ProductList";
 import { Summary } from "./components/Summary";
 import axios from "axios";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { healthCheck } from "./api/api";
+import { MovieList } from "./components/MovieList";
+
+const queryClient = new QueryClient();
+
+const handleHealthCheck = () =>
+  healthCheck().then((response) => {
+    console.log(response);
+  });
 
 function App() {
+  const [step, setStep] = useState(0);
   const [products, setProduts] = useState([
     {
       productId: "uuid-1",
@@ -77,33 +88,50 @@ function App() {
         );
     }
   };
+  const stepUI = [SelectMovieSchedule()];
+
   return (
-    <div className="App">
-      <div className="row justify-content-center m-4">
-        <h1 className="text-center">Grids &amp; Circle</h1>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <div className="row justify-content-center m-4">
+          <h1 className="text-center">영화 예매하기 </h1>
+        </div>
+        {stepUI[step]}
       </div>
-      <div className="card">
-        <div className="row ">
-          <div className="col-md-8">
-            <div className="row p-3 ">
-              {/* <div className="col-md-12">날짜선택</div> */}
-              <div className="col-md-2">영화선택</div>
-              <div className="col-md-2">극장선택</div>
-              <div className="col-md-8 mt-4 d-flex flex-column align-items-start p-3 pt-0">
-                <ProductList
-                  products={products}
-                  onAddClick={handleAddClicked}
-                />
+    </QueryClientProvider>
+  );
+
+  function SelectMovieSchedule() {
+    return (
+      <section className="d-flex flex-column justify-center-center">
+        <div className="card">
+          <div className="row items-stretch">
+            <div className="col-md-12">
+              <div className="row p-3 ">
+                {/* <div className="col-md-12">날짜선택</div> */}
+                <div className="col-md-4 mt-4 d-flex flex-column">
+                  <MovieList/>
+                </div>
+                <div className="col-md-4">극장선택</div>
+                <div className="col-md-4 mt-4 d-flex flex-column align-items-start p-3 pt-0">
+                  <ProductList
+                    products={products}
+                    onAddClick={handleAddClicked}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-4 summary p-4">
-            <Summary items={items} onOrderSubmit={handleOrderSubmit} />
+            {/* <div className="col-md-4 summary p-4">
+              <Summary items={items} onOrderSubmit={handleOrderSubmit} />
+            </div> */}
           </div>
         </div>
-      </div>
-    </div>
-  );
+        <button className="mt-3 align-self-end" onClick={handleHealthCheck}>
+          조회하기
+        </button>
+      </section>
+    );
+  }
 }
 
 export default App;
