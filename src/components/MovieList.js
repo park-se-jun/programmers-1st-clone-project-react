@@ -1,8 +1,6 @@
-import { Product } from "./Product";
 import React from "react";
-import { useQuery } from "react-query";
 import { getActiveMovieList } from "../api/api";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { useState } from "react";
 import { useEffect } from "react";
 import { selectedMovieIdState } from "../atom/atom";

@@ -12,7 +12,7 @@ export const selectedScheduleState = atom({
     key:"selectedScheduleState",
     default:null
 })
-const bookingStepState = atom({
+export const bookingStepState = atom({
   key: 'bookingStepState',
   default: 0,
 });

@@ -23,4 +23,7 @@ export const getScheduleList = (requestParams)=>{
         params : requestParams
     })
 }
+export const getSeatMapByScheduleId =(scheduleId)=>{
+    return baseApiClient.get(`api/schedules/${scheduleId}/seats`);
+}
 // export const healthcheck

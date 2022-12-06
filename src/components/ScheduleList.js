@@ -1,16 +1,16 @@
-import { Product } from "./Product";
 import React from "react";
-import { useQuery } from "react-query";
-import { getActiveMovieList, getScheduleList } from "../api/api";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {  getScheduleList } from "../api/api";
+import {  useRecoilValue, useSetRecoilState } from "recoil";
 import { useState } from "react";
 import { useEffect } from "react";
-import { selectedMovieIdState, selectedTheaterIdState } from "../atom/atom";
+import { bookingStepState, selectedMovieIdState, selectedScheduleState, selectedTheaterIdState } from "../atom/atom";
 
 export function ScheduleList() {
   const [scheduleList, setScheduleList] = useState([]);
   const selectedMovieId = useRecoilValue(selectedMovieIdState);
   const selectedTheaterId = useRecoilValue(selectedTheaterIdState);
+  const setSelectedScheduleId = useSetRecoilState(selectedScheduleState);
+  const setBookingStep = useSetRecoilState(bookingStepState);
   useEffect(() => {
     getScheduleList({
       theaterId: selectedTheaterId,
@@ -23,6 +23,10 @@ export function ScheduleList() {
       .catch((error) => setScheduleList([]));
   }, [selectedMovieId, selectedTheaterId]);
 
+  const handleScheduleClick = (scheduleId) =>{
+    setSelectedScheduleId(scheduleId)
+    setBookingStep(1);
+  }
   return (
     <>
       <h5 className="flex-grow-0">
@@ -33,6 +37,7 @@ export function ScheduleList() {
           <li
             key={schedule.scheduleId}
             className={`list-group-item d-flex mt-3 px-3 list-group-item-action justify-content-between gap-3`}
+            onClick ={()=>handleScheduleClick(schedule.scheduleId)}
           >
             <Schedule schedule={schedule}/>
           </li>
