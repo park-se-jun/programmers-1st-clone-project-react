@@ -8,6 +8,9 @@ import axios from "axios";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { healthCheck } from "./api/api";
 import { MovieList } from "./components/MovieList";
+import { TheaterList } from "./components/TheaterList";
+import { RecoilRoot } from "recoil";
+import { ScheduleList } from "./components/ScheduleList";
 
 const queryClient = new QueryClient();
 
@@ -92,12 +95,14 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="App">
-        <div className="row justify-content-center m-4">
-          <h1 className="text-center">영화 예매하기 </h1>
+      <RecoilRoot>
+        <div className="App">
+          <div className="row justify-content-center m-4">
+            <h1 className="text-center">영화 예매하기 </h1>
+          </div>
+          {stepUI[step]}
         </div>
-        {stepUI[step]}
-      </div>
+      </RecoilRoot>
     </QueryClientProvider>
   );
 
@@ -109,15 +114,18 @@ function App() {
             <div className="col-md-12">
               <div className="row p-3 ">
                 {/* <div className="col-md-12">날짜선택</div> */}
-                <div className="col-md-4 mt-4 d-flex flex-column">
-                  <MovieList/>
+                <div className="col-md-4 mt-4">
+                  <MovieList />
                 </div>
-                <div className="col-md-4">극장선택</div>
-                <div className="col-md-4 mt-4 d-flex flex-column align-items-start p-3 pt-0">
-                  <ProductList
+                <div className="col-md-2 mt-4 ">
+                  <TheaterList />
+                </div>
+                <div className="col-md-6 mt-4 p-3 pt-0">
+                  {/* <ProductList
                     products={products}
                     onAddClick={handleAddClicked}
-                  />
+                  /> */}
+                  <ScheduleList/>
                 </div>
               </div>
             </div>

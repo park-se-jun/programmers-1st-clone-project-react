@@ -1,27 +1,38 @@
-import { Product } from "./Product";
 import React from "react";
-import { useQuery } from "react-query";
-import { getActiveMovieList } from "../api/api";
+import { getAllTheaterList } from "../api/api";
+import { useState } from "react";
+import { useEffect } from "react";
+import { selectedTheaterIdState } from "../atom/atom";
+import { useRecoilState } from "recoil";
 
 export function TheaterList() {
-  const fetchMovieList = async (key) => {
-    const { data } = await getActiveMovieList();
-    return data;
-  };
-
-  const { status, data, error, refetch } = useQuery(
-    ["MovieList"],
-    fetchMovieList
-  );
+  const [theaterList, setTheaterList] = useState([]);
+  const [selectedTheaterId, setSelectedTheaterId] = useRecoilState(selectedTheaterIdState);
+  useEffect(() => {;
+    getAllTheaterList().then(data => setTheaterList(data.data));
+  }, [])
+  
+  const handleOnClickTheater = (theaterId) =>{
+    if(selectedTheaterId === theaterId){
+      setSelectedTheaterId("");
+    }
+    else{
+      setSelectedTheaterId(theaterId);
+    }
+  }
   return (
     <>
       <h5 className="flex-grow-0">
-        <b>영화 목록</b>
+        <b>극장 목록</b>
       </h5>
       <ul className="list-group products">
-        {data?.map((movie) => (
-          <li key={movie.movieId} className="list-group-item d-flex mt-3 p-0">
-            <Movie movie={movie}/>
+        {theaterList?.map((theater) => (
+          <li
+            key={theater.theaterId}
+            className={`list-group-item d-flex mt-3 p-0 list-group-item-action ${selectedTheaterId===theater.theaterId?"active":""}`}
+            onClick={()=>handleOnClickTheater(theater.theaterId)}
+          >
+            <Theater theater={theater} />
           </li>
         ))}
         {/* {products.map(v =>
@@ -33,18 +44,6 @@ export function TheaterList() {
     </>
   );
 }
-function Movie({movie}) {
-  return <>
-    <img
-      src={movie.posterUrl}
-      alt="포스터"
-      className="rounded-start" />
-    <div className="d-flex flex-column justify-content-between py-1">
-      <h6>{movie.title}</h6>
-      <span className="text-muted">
-        개봉일: {movie.releaseDate}
-      </span>
-    </div>
-  </>;
+function Theater({ theater }) {
+  return <span className=" py-1">{theater.theaterName}</span>;
 }
-
