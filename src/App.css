@@ -14,6 +14,7 @@ body {
 }
 
 .summary {
+  min-height: 500px;
   background-color: #ddd;
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;

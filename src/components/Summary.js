@@ -1,32 +1,64 @@
 import {SummaryItem} from "./SummaryItem";
 import React, {useState} from "react";
+import {createReservation} from "../api/api";
+import {useRecoilValue} from "recoil";
+import {selectedScheduleState} from "../atom/atom";
 
-export function Summary({items = [],onOrderSubmit}) {
-    const totalPrice = items.reduce((prev, curr) => {
-        return prev + (curr.price * curr.count)
-    }, 0);
-    const[order,setOrder] = useState({
-        email:"",address:"",postcode:""
+const MOVIE_PRICE = 15000;
+
+export function Summary({items = []}) {
+    const totalPrice = items.length * MOVIE_PRICE;
+    const [order, setOrder] = useState({
+        phoneNumber: ""
     });
-    const changeEmailInputChanged = (e)=>{
+    const selectedScheduleId = useRecoilValue(selectedScheduleState);
+
+    const changePhoneNumberInputChanged = (e) => {
         setOrder({
-            ...order,email:e.target.value
+            ...order, phoneNumber: e.target.value
         })
     }
-    const changeAddressInputChanged = (e)=>{
-        setOrder({
-            ...order,address:e.target.value
-        })
-    }
-    const changePostcodeInputChanged = (e)=>{
-        setOrder({
-            ...order,postcode:e.target.value
-        })
-    }
-    const handleSubmit = (e)=>{
-        if(order.address===""||order.email===""||order.postcode===""){
+
+    const onOrderSubmit = (order) => {
+        function makeRowColArrays(items) {
+            const rowArray = [];
+            const colArray = [];
+            for (const element of items) {
+                const [row, col] = element.split(/(?<=\D)(?=\d)/);
+                rowArray.push(row);
+                colArray.push(col);
+            }
+            return [rowArray, colArray];
+        }
+
+        if (items.length === 0) {
+            alert("좌석을 추가해 주세요!");
+        } else {
+            const [rowArray, colArray] = makeRowColArrays(items);
+            const body = {
+                scheduleId: selectedScheduleId,
+                phoneNumber: order.phoneNumber,
+                price: totalPrice,
+                rowArray: rowArray,
+                colArray: colArray
+            }
+            console.log(body)
+            createReservation(body).then(
+                (v) => {
+                    alert("주문이 정상적으로 접수되었습니다.")
+                    window.location.reload();
+                },
+                (e) => {
+                    alert("서버 장애");
+                    console.error(e);
+                }
+            )
+        }
+    };
+    const handleSubmit = (e) => {
+        if (order.phoneNumber === "") {
             alert("입력값을 확인해주세요!")
-        } else{
+        } else {
             onOrderSubmit(order);
         }
         console.log(order);
@@ -37,28 +69,26 @@ export function Summary({items = [],onOrderSubmit}) {
                 <h5 className="m-0 p-0"><b>Summary</b></h5>
             </div>
             <hr/>
-            {items.map(item => {
-                return (
-                    <SummaryItem key={item.productId} productName={item.productName} count={item.count}/>
-                )
-            })}
+            <div className={"d-flex gap-1"}>
+                {items.map(item => {
+                    return (
+                        <SummaryItem key={item} seatName={item}/>
+                    )
+                })}
+            </div>
+
             <form>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label">이메일</label>
-                    <input type="email" className="form-control mb-1" id="email" value={order.email} onChange={changeEmailInputChanged}/>
+                    <label htmlFor="phoneNumber" className="form-label">전화번호</label>
+                    <input type="tel" className="form-control" id="phoneNumber" value={order.phoneNumber}
+                           placeholder="000-0000-0000"
+                           pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                           onChange={changePhoneNumberInputChanged}/>
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="address" className="form-label">주소</label>
-                    <input type="text" className="form-control mb-1" id="address" value={order.address} onChange={changeAddressInputChanged}/>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="postcode" className="form-label">우편번호</label>
-                    <input type="text" className="form-control" id="postcode" value={order.postcode} onChange={changePostcodeInputChanged}/>
-                </div>
-                <div>당일 오후 2시 이후의 주문은 다음날 배송을 시작합니다.</div>
+                <div>최대 8자리 까지 예약할 수 있습니다.</div>
             </form>
             <div className="row pt-2 pb-2 border-top">
-                <h5 className="col">총금액</h5>
+                <h5 className="col">총 금액</h5>
                 <h5 className="col text-end">{totalPrice}원</h5>
             </div>
             <button className="btn btn-dark col-12" onClick={handleSubmit}>결제하기</button>

@@ -6,7 +6,7 @@ import { ProductList } from "./components/ProductList";
 import axios from "axios";
 import { healthCheck } from "./api/api";
 import { RecoilRoot } from "recoil";
-import {  MovieBookingSteps } from "./MovieBookingSteps";
+import {  MovieBookingSteps } from "./components/steps/MovieBookingSteps";
 
 export const handleHealthCheck = () =>
   healthCheck().then((response) => {

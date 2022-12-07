@@ -26,4 +26,8 @@ export const getScheduleList = (requestParams)=>{
 export const getSeatMapByScheduleId =(scheduleId)=>{
     return baseApiClient.get(`api/schedules/${scheduleId}/seats`);
 }
+
+export const createReservation = (requestBody) =>{
+    return baseApiClient.post("api/reservations",requestBody)
+}
 // export const healthcheck
