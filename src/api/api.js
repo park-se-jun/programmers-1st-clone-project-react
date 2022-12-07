@@ -28,6 +28,10 @@ export const getSeatMapByScheduleId =(scheduleId)=>{
 }
 
 export const createReservation = (requestBody) =>{
-    return baseApiClient.post("api/reservations",requestBody)
+    return baseApiClient.post("api/reservations",requestBody);
+}
+
+export const findResorvationByPhoneNumber = (phoneNumber)=>{
+    return baseApiClient.get(`api/reservations/lookup/${phoneNumber}`);
 }
 // export const healthcheck

@@ -12,8 +12,8 @@ const parseResponseToState = (response) => {
   for (const [rowName, reservedStateArray] of Object.entries(response.seats)) {
     const rowStateArray = reservedStateArray.map((reservedInfo, index) => {
       const mappedValue = {
-        id: rowName + index,
-        number: rowName + index,
+        id: rowName + (index+1),
+        number: rowName + (index+1),
         isReserved: !reservedInfo,
       };
       return mappedValue;
@@ -52,7 +52,7 @@ export function SelectSeatStep() {
 
   return (
     <section className="d-flex flex-column justify-center-center">
-      <div className="card">
+      <div className="reservation-card">
         <div className="row items-stretch">
           <div className="col-md-8 p-4 d-flex">
             {seatMap == null ? (

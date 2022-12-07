@@ -1,4 +1,4 @@
-import {SummaryItem} from "./SummaryItem";
+import {SeatItem} from "./SeatItem";
 import React, {useState} from "react";
 import {createReservation} from "../api/api";
 import {useRecoilValue} from "recoil";
@@ -72,7 +72,7 @@ export function Summary({items = []}) {
             <div className={"d-flex gap-1"}>
                 {items.map(item => {
                     return (
-                        <SummaryItem key={item} seatName={item}/>
+                        <SeatItem key={item} seatName={item}/>
                     )
                 })}
             </div>

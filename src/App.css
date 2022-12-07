@@ -2,7 +2,7 @@ body {
   background: #ddd;
 }
 
-.card {
+.reservation-card {
   margin: auto;
   width: 950px;
   min-height:500px;
@@ -12,7 +12,29 @@ body {
   border-radius: 1rem;
   border: transparent
 }
+.my-modal{
+  position: absolute;
+  display: flex;
+  left: 50%; /* relative to nearest positioned ancestor or body element */
+  top: 50%; /*  relative to nearest positioned ancestor or body element */
+  transform: translate(-50%, -50%); /* relative to element's height & width */
+  width: 950px;
+  min-height:500px;
+  background-color: white;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 1rem;
+  border: transparent
+}
 
+.my-modal-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backgroundColor: 'rgba(255, 255, 255, 0.75)';
+  background-color: rgba(0,0,0,0.5);
+}
 .summary {
   min-height: 500px;
   background-color: #ddd;
