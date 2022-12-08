@@ -84,6 +84,7 @@ export function MyModal(props) {
                             <span
                                 className={"text-muted"}>{reservation.movieStartTime}~{reservation.movieEndTime}</span>
                             </div>
+                            <div>상영관: {reservation.screenName}</div>
                             <div>예매 좌석 수 : {reservation.seatCount}</div>
                             <div>예매된 좌석 :</div>
                             <div className={"d-flex gap-1"}>

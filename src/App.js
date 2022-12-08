@@ -43,12 +43,15 @@ function App() {
       .then((v) => setProduts(v.data));
   }, []);
 
+  const redirect=(path) =>{
+    window.location.href=path;
+  }
 
   return (
     <RecoilRoot>
       <div className="App">
         <div className="row justify-content-center m-4">
-          <h1 className="text-center">영화 예매하기 </h1>
+          <h1 className="text-center" onClick={()=>redirect("")}>영화 예매하기 </h1>
         </div>
         <MovieBookingSteps />
       </div>
