@@ -56,6 +56,7 @@ export function Summary({items = []}) {
         }
     };
     const handleSubmit = (e) => {
+        e.preventDefault()
         if (order.phoneNumber === "") {
             alert("입력값을 확인해주세요!")
         } else {
@@ -77,10 +78,10 @@ export function Summary({items = []}) {
                 })}
             </div>
 
-            <form>
+            <form id="reservation-form" onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="phoneNumber" className="form-label">전화번호</label>
-                    <input type="tel" className="form-control" id="phoneNumber" value={order.phoneNumber}
+                    <input required type="tel" className="form-control" id="phoneNumber" value={order.phoneNumber}
                            placeholder="000-0000-0000"
                            pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                            onChange={changePhoneNumberInputChanged}/>
@@ -91,7 +92,7 @@ export function Summary({items = []}) {
                 <h5 className="col">총 금액</h5>
                 <h5 className="col text-end">{totalPrice}원</h5>
             </div>
-            <button className="btn btn-dark col-12" onClick={handleSubmit}>결제하기</button>
+            <button className="btn btn-dark col-12" type="submit" form="reservation-form">결제하기</button>
         </>
     );
 }

@@ -44,7 +44,11 @@ export function MyModal(props) {
                   overlayClassName={"my-modal-overlay"}
                   isOpen={props.open}
                   onAfterOpen={props.onAfterOpen}
-                  onRequestClose={props.onRequestClose}
+                  onRequestClose={()=>{
+                    setPhoneNumber("");
+                    setReservationList([])
+                    props.onRequestClose();
+                }}
                   contentLabel="Example Modal"
     >
         <h2 className={"col-md-12 text-center pt-3"}>예매내역 조회하기</h2>
@@ -64,12 +68,12 @@ export function MyModal(props) {
 
         </div>
         </div>
-        <div className={"d-flex gap-2 py-4"}>
+        <div className={"d-flex gap-2 py-4 flex-wrap "}>
 
             {reservationList.map(reservation => {
                 return (
 
-                    <div className="card text-bg-light mb-3 p-0" style={{maxWidth: "18rem"}}>
+                    <div className="card text-bg-light mb-3 p-0" style={{maxWidth: "18rem",minWidth:"18rem"}}>
                         <div className="card-header">
                             <h5 className="card-title">{reservation.movieTitle}</h5>
                         </div>

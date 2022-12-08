@@ -21,10 +21,13 @@ body {
   transform: translate(-50%, -50%); /* relative to element's height & width */
   width: 950px;
   min-height:500px;
+  max-height: 70vh;
   background-color: white;
   box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 1rem;
+  overflow-y: auto;
   border: transparent
+  
 }
 
 .my-modal-overlay{
